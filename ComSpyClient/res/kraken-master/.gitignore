@@ -1,0 +1,8 @@
+.classpath
+.project
+.settings
+target
+*.class
+Thumbs.db
+.DS_Store
+*.sublime-*

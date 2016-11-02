@@ -1,0 +1,19 @@
+First open the command prompt and compail this check1.java file as follows
+javac check1.java
+
+Second run the class file in the command prompt as follows
+java check1 www.google.com
+
+
+
+Note:
+----
+If you do not know how to set the path for jdk then you can visit the website
+
+http://www.completetutorials.googlepages.com/SCJA_SCJP_SCJD_java_introduction.html
+
+
+
+Author:
+-------
+http://www.completetutorials.googlepages.com

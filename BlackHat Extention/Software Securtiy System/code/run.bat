@@ -1,0 +1,7 @@
+
+
+javac *.java
+
+
+java Sss
+

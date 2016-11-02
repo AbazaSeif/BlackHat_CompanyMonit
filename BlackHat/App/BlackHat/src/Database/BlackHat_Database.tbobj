@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TB_OBJ selectedConn="jdbc:sqlite:/home/abaza/Projects/BlackHat/data/db [ on Default schema]">
+  <CONN connName="jdbc:derby://localhost:1527/sample [app on APP]" />
+  <CONN connName="jdbc:derby://localhost:1527/travel [travel on TRAVEL]" />
+  <CONN connName="jdbc:derby://localhost:1527/vir [vir on VIR]" />
+  <CONN connName="jdbc:derby://localhost:1527/ModernLab [ on APP]" />
+  <CONN connName="jdbc:mysql://localhost:3306/ComSpy?zeroDateTimeBehavior=convertToNull [root on Default schema]" />
+  <CONN connName="jdbc:mysql://localhost:3306/SuperWoW?zeroDateTimeBehavior=convertToNull [root on Default schema]" />
+  <CONN connName="jdbc:sqlite:/home/abaza/NetBeansProjects/ModirnLab/db/ModernLab.db [ on Default schema]" />
+  <CONN connName="jdbc:sqlite:/home/abaza/NetBeansProjects/Network/BlackHat/data/db [ on Default schema]" srcPkgPath="Database" />
+  <CONN connName="jdbc:sqlite:/home/abaza/Projects/BlackHat/data/db [ on Default schema]" srcPkgPath="Database" />
+</TB_OBJ>
+

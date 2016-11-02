@@ -1,0 +1,12 @@
+777                           import java.awt.*;
+public class myawt extends Frame
+{
+public static void main(String args[])
+{
+myawt m=new myawt();
+m.setSize(400,400);
+m.setLocation(100,200);
+m.setBackground(Color.yellow);
+m.show();
+}}
+

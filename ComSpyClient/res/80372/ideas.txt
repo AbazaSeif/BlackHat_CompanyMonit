@@ -1,0 +1,42 @@
+steps for packet analysis:
+
+1) create a split pane view with a list box and a tabbed 
+pane that contains a protocol lable and a rich text box on each pane for each protocol
+
+2) the default tab (and default filter protocol) is tcp
+
+3) when a packet on the left is selected, it is displayed with html in the currently selected tab
+
+4) selecting a protocol tab resets the filter mechanism to filter for that tabs protocol
+(to filter for multiple protocols, run multiple schnufflen instances).
+
+
+ether proto ip
+ip proto tcp or ip6 proto tcp
+
+    // Create the tabbed pane
+    JTabbedPane pane = new JTabbedPane();
+    
+    // Add tabs...; see e830 Adding a Tab to a JTabbedPane Container
+    
+    // Register a change listener
+   jpt.addChangeListener(new ChangeListener() 
+{
+        // This method is called whenever the selected tab changes
+        public void stateChanged(ChangeEvent evt) {
+            JTabbedPane pane = (JTabbedPane)evt.getSource();
+            int sel = pane.getSelectedIndex();
+		frame.getModel().clear();
+            frame.getTextArea2().updateUI();
+            
+            if(frame.getsniffer()!=null)
+            {
+                frame.getsniffer().stopthread();
+                frame.setsniffer(null);
+            }
+		jsp=(JScrollPane)pane.getComponentAt(sel);               
+                    jta=(JTextArea)jsp.getViewport().getView();
+                    jta.setText("");
+                    jta.setCaretPosition(0);    
+        }
+    });

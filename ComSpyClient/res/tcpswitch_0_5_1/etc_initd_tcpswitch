@@ -1,0 +1,38 @@
+#! /bin/sh
+#
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/opt/tcpswitchd/tcpswitchd.sh
+STOPDAEMON=/opt/tcpswitchd/stoptcpswitchd.sh
+DESC=TCP-Switch
+NAME=tcpswitch
+
+test -f $DAEMON || exit 0
+
+set -e
+
+die(){ echo "$progname: $*">&2; exit 1; }
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+        $DAEMON
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        $STOPDAEMON
+        echo "$NAME."
+        ;;
+  restart)
+        $0 stop || true
+        $0 start
+        ;;
+  *)
+        N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

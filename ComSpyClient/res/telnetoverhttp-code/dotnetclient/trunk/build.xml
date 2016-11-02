@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<!--
+   | Copyright (c) 2003 Eric Daugherty.  All rights reserved.
+   |
+   | www.ericdaugherty.com/java/workspace
+   | java@ericdaugherty.com
+-->
+
+<project default="compile" basedir=".">
+
+
+    <property file="build.properties" />
+
+<!--
+   | ************************************************************
+   |
+   | Release
+   |
+   | ************************************************************
+-->
+
+    <target name="release">
+        <mkdir dir="${build.release.dir}" />
+        <zip destfile="${build.release.file}">
+            <fileset dir="./bin/Release" />
+        </zip>
+        <zip destfile="${build.release-src.file}">
+            <fileset dir=".">
+                <include name="TelnetOverHttp dotnet Client.sln" />
+                <include name="ProxyClient/**/*" />
+                <include name="ProxyCommon/**/*" />
+                <include name="src/**/*" />
+                <exclude name="**/obj/**/*" />
+                <exclude name="**/*.user" />
+            </fileset>
+        </zip>
+    </target>
+    
+<!--
+   | ************************************************************
+   |
+   | Clean
+   |
+   | ************************************************************
+-->
+
+    <!--
+       | Deletes the entire build directory
+    -->
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>    
+
+</project>

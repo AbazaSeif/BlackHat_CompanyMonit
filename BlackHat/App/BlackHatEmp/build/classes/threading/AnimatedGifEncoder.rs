@@ -1,0 +1,3 @@
+threading.NeuQuant
+threading.AnimatedGifEncoder
+threading.LZWEncoder

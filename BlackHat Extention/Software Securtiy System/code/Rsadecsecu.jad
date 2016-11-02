@@ -1,0 +1,25 @@
+// Decompiled by DJ v3.7.7.81 Copyright 2004 Atanas Neshkov  Date: 5/29/2004 12:43:20 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   Rsadecsecu.java
+
+
+public class Rsadecsecu
+{
+
+    public Rsadecsecu()
+    {
+    }
+
+    public String doit(String s, String s1, String s2)
+        throws Exception
+    {
+        String s3 = new String();
+        String s4 = new String();
+        Rsadecsign rsadecsign = new Rsadecsign();
+        Rsadecconf rsadecconf = new Rsadecconf();
+        s3 = rsadecsign.doit(s, s2);
+        s4 = rsadecconf.doit(s1, s3);
+        return s4;
+    }
+}

@@ -1,0 +1,47 @@
+Changes in 3.4.1:
+- Favorites saving bug fixed
+- More forgiving importing of previously saved scanning results
+- IP details and some other functions now work properly for imported results
+- Mac vendors updated
+- Other small stability improvements
+
+Changes in 3.4:
+- Openers can open several IPs at once
+- More bugfixes in opener editor + OK/Cancel buttons
+- File Feeder now supports extracting of hostnames in addition to IP addresses
+- Loading of exported files will no longer try to rescan the last loaded IP
+- User is asked whether to resume the loaded scan if it seems unfinished
+- Fixed MAC address fetcher for Mac OS
+- MAC vendors updated
+- Check for new version automatically once per month
+- Internal and plugins: Dagger is now used instead of PicoContainer for dependency injection
+- New translations: Turkish, German
+
+Changes in 3.3.3:
+- Fixed a bug in opener editor when switching between openers could overwrite them
+- Bind comments to MAC addresses if possible, making comments for local hosts persist even for dynamic IPs
+
+Changes in 3.3.2:
+- Much smarter HostnameFetcher, which queries mDNS and NetBIOS in case standart DNS reverse lookup doesn't provide results
+- Packaging fix for Windows, which could prevent "display alive only" from working
+- Fixed prepopulation of feeder from command-line
+- Fixed dimensions on command-line usage dialog
+- Updated MAC vendors
+
+Changes in 3.3.1:
+- Fix Linux 64-bit (and probably 32-bit as well) build - add missing swt native libraries
+- Quicker hostname lookups
+- Small optimizations in UDP/TCP pingers
+
+Changes in 3.3:
+- IP range now defaults to the current netmask on start to make it easier to start scanning the current network
+- Can load previously saved .txt file with incomplete scanning results and resume the scan
+- IP range can now be scanned in reverse
+- Language can now be selected in preferences
+- Hungarian translation added
+- Fixed links in the Help menu
+- SWT upgraded to 4.3
+- Use 64-bit SWT on Mac, supporting Oracle Java 1.7+
+- Use sheets instead of some dialogs on Mac
+
+(thanks to contributors)

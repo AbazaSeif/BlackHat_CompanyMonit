@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="lib_common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/dagger-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javax.inject-1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dagger-compiler-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dagger-producers-2.0-beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-18.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/swt-src.zip!/" />
+    </SOURCES>
+  </library>
+</component>

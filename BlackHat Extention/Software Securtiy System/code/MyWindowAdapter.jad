@@ -1,0 +1,24 @@
+// Decompiled by DJ v3.7.7.81 Copyright 2004 Atanas Neshkov  Date: 5/29/2004 12:37:03 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   Sss.java
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+
+class MyWindowAdapter extends WindowAdapter
+{
+
+    public MyWindowAdapter(JFrame jframe)
+    {
+        frame = jframe;
+    }
+
+    public void windowClosing(WindowEvent windowevent)
+    {
+        frame.setVisible(false);
+    }
+
+    JFrame frame;
+}

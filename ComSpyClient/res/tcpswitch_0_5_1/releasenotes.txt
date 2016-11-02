@@ -1,0 +1,37 @@
+                         The TCP-Switch Application
+------------------------------------------------------------------------------
+
+release 0.5.1:
+--------------
+
+ * BugFix: option -daemon did not work
+ * added example shell scripts for daemon mode
+
+release 0.5.0:
+--------------
+
+ * support of HTTPSPROXY
+
+release 0.4.0:
+--------------
+
+ * parser for config file
+ * listen at multiple ports
+
+release 0.3.0:
+--------------
+
+ * support of passive FTP
+
+release 0.2.0:
+--------------
+
+ * support of HTTP with or without Host rewriting
+
+ * added debug option
+
+release 0.1.0:
+--------------
+
+ * support of HTTPS and SSH
+ 

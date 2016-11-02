@@ -1,0 +1,30 @@
+orbit                         import java.util.*;
+class QueueDemo
+{
+public static void main(String args[])
+	{
+	PriorityQueue q=new PriorityQueue();
+
+System.out.println("size :"+q.size());
+
+
+	q.add(100);
+	q.add(200);
+	q.add(300);
+	q.add(400);
+	q.add(500);
+	
+System.out.println("size :"+q.size());
+
+System.out.println(q);
+	
+	q.poll();
+	q.offer(600);
+	q.remove(300);
+
+	System.out.println(q);
+
+	
+	}
+
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="SL">http://localhost/ComSpyServer/cinterpoint.php</entry>
+  <entry key="lang">EN</entry>
+  <entry key="UUID">48fe4591-9223-4b76-85ed-e91801c2e111</entry>
+  <entry key="port1">3333</entry>
+  <entry key="port2">2222</entry>
+  <entry key="username">abaza</entry>
+  <entry key="password">abaza</entry>
+  <entry key="linses">free</entry>
+</properties>

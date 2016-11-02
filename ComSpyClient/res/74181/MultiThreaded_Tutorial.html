@@ -1,0 +1,1798 @@
+﻿<html>
+<head>
+<title>A Tutorial on MultiThreaded Applet </title>
+
+<META NAME="description" CONTENT="This tutorial shows how to build a simple thread applet that also be run as an application.">
+
+<meta NAME="keywords" CONTENT="total application works, Basic thread, thread, simple thread, threadlife cycle, Basic applet, applet, simple applet">
+<meta name="title" content="A Tutorial on Applet Life Cycles - java, javscript">
+<meta NAME="Copyright" CONTENT="Copyright 2005, Total Application Works">
+<meta NAME="Creator" CONTENT="Total Application Works">
+<meta NAME="Publisher" CONTENT="Total Application Works">
+<meta NAME="Distribution" CONTENT="Global">
+<meta NAME="Rating" CONTENT="General">
+
+
+          <meta NAME="revisit-after" content=" 7 days">    
+
+</head>
+<body>
+<font size=4>
+<hr>
+<center><font color=blue size=5><b>Tutorial: How to Create a Basic Multithreaded Applet/Application </b> </font> 
+<br>
+
+          <br> <center> 
+          <img src="indexHWS_files/bludiv4684.html" width="600" height="5">
+
+           <p><font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+
+<br> <br><font size="5">To visit my site</font> <br> <br>
+
+[<a href="http://sumtotalz.com/TotalAppsWorks/index.html">HOME</a>] 
+                 [<a href="http://sumtotalz.com/TotalAppsWorks/consulting.html">Consulting</a>] [<a href="http://sumtotalz.com/TotalAppsWorks/design.html">Design</a>]
+                 [<a href="http://sumtotalz.com/TotalAppsWorks/Maintenance.html">Maintenance</a>] [<a href="http://sumtotalz.com/TotalAppsWorks/project.html">Project</a>] 
+                 [<a href="http://sumtotalz.com/TotalAppsWorks/testing.html">Testing</a>] [<a href="http://sumtotalz.com/training.html">Training</a>] [<a href="http://sumtotalz.com/turnkey.html">Turnkey</a>] 
+                  [<a href="http://sumtotalz.com/TotalAppsWorks/java.html">Java</a>]</font></p>
+
+<br> <br><a href="http://sumtotalz.com/TotalAppsWorks/contact.html"><font size="4">To contact us</font></a>  <br><br>
+
+           <p><font color="black" size="2" face="Arial, Helvetica, sans-serif">© 2002 - 2007 All 
+                Rights Reserved<b><i> Total Application Works </i></b></font></p> </center> 
+
+</center>
+<hr>
+<hr>
+<ul>
+<li>Tell a friend about this site (copy and paste the following HTML page into a file or send this page to a friend.)
+<table border>
+
+<tr align=left>
+<th> &lt;html> <br>
+&lt;title>Example of a link &lt;/title> <br>
+&lt;body> <br>
+&lt;table border> <br>
+&lt;a <br>
+href="http://sumtotalz.com/TotalAppsWorks/Applet/MultiThreaded_Tutorial.html">  Tutorial: Applet-Thread Life Cycle Tutorial &lt;/a>  <br>
+
+&lt;/table>  <br>
+&lt;/body>  <br>
+&lt;/html> </th>
+</tr>
+<tr>
+<th><a href="http://www.sumtotalz.com/TotalAppsWorks/Applet/MultiThreaded.zip"> Source </a> </th>
+</tr>
+<tr>
+<th><a href="http://www.sumtotalz.com/TotalAppsWorks/Applet/MultiThreaded.JPG"> Screenshot </a> </th>
+
+</tr>
+
+</table>
+<li> On-site classes can be arranged in Java and C++. Send all inquiries to:
+<table border>
+<tr>
+<th>RonHolland@sumtotalz.com</th>
+</tr>
+</table> <br> <br>
+<li><a href="#INTRO"> Introduction </a>  
+<li><a href="#WAMPOAI"> Why are multithreaded programs of any interest?  </a> 
+<li><a href="#REQ"> Requirements </a>  
+<li><a href="#Template">What is a Template?</a>
+<li><a href="#MALCTM">Multithreaded ThreadLifeCycle_III program modified</a>
+<li><a href="#MTP">MultiThreaded_II Program - Update 1</a>
+<li><a href="#TLCPIII">MultiThreaded_III Program - Update 2</a>
+<li><a href="#SETUP"> What is the purpose of the setup() method?  </a>
+<li><a href="#TLCPIV">MultiThreaded_IV Program - Update 3</a>
+<li><a href="#DEF">Definitions</a>
+</ul>  
+<h3><a name="INTRO"> Introduction </a> </h3>
+<p>This tutorial assumes that you have read and completed the following tutorials.
+<ol>
+<li><a href="http://java.sun.com/docs/books/tutorial/getStarted/cupojava/index.html">Your First Cup of Java </a>
+<li><a href="http://java.sun.com/docs/books/tutorial/getStarted/index.html"> Getting Started </a>
+<li><a href="http://sumtotalz.com/TotalAppsWorks/SecondCupOfJava.html"> <b><i>Tutorial: A Second Cup of Java</i></b> </a>
+<li><a href="http://sumtotalz.com/TotalAppsWorks/Applet/AppletLifeCycle_Tutorial"> <b><i>Applet Life Cycle Tutorial</i></b> </a>
+<li><a href="http://sumtotalz.com/TotalAppsWorks/Applet/ThreadLifeCycle_Tutorial.html"> <b><i>Thread Life Cycle Tutorial</i></b> </a>
+</ol>
+</p>
+<p>In the previous tutorial, <b><i>Thread Life Cycle Tutorial</i></b>, we introduced the concept of the <i>many waiter scenario</i>. This implied a multithreaded server. This means we have to
+transition from a <i>multithreaded applet</i> to a <i>multithreaded server</i>. How do we go from an <b><a href="#APP">applet</b></a> to a server? One way is as follows.
+<table border>
+<tr>
+<th>Multithreaded applet to multithreaded server</th>
+</tr>
+<tr>
+<td>
+<pre> <b> <font color=blue>
++------------+
+|   Applet   | ---------------> Previous tutorial
++-----+------+
+      |
+      |
++-----+------+
+|   Applet/  | ------------+
+| Application|             | 
++-----+------+             | ----> This tutorial
+      |                    | 
++-----+------+             | 
+| Application| ------------+
++-----+------+
+      |
+      |
++-----+------+
+|   Server   | ---------------> Next tutorial
++------------+
+</font> </b> </pre>
+</td>
+</tr>
+<tr>
+<th>Figure 1: Migrating from an applet to an application</th>
+</tr>
+</table> <br>  <br> 
+In the above Figure 1, the three stages depicted are
+<ol>
+<li><a href="http://sumtotalz.com/TotalAppsWorks/Applet/ThreadLifeCycle_Tutorial.html"><b>Previous tutorial</b></a> - The purpose of that tutorial was to introduce you to a basic understanding of the multithreaded <b><a href="#APP">applet</b></a>. The applets used in the previous tutorial were:
+<ol>
+<li><b>HelloWorld</b> - basic hello world applet
+<li><b>ThreadLifeCycle</b> - basic Thread Life Cycle applet
+<li><b>ThreadLifeCycle_II</b> - basic Thread Life Cycle applet, with an elapsed time measurement
+<li><b>ThreadLifeCycle_III</b> - basic <a href="#MULTIT"><b>multi</b>Threaded</a> Life Cycle applet, with an elapsed time measurement
+</ol>
+<li><b>This tutorial</b> - This tutorial takes the <b>ThreadLifeCycle_III</b> class developed in the last tutorial and does two things:
+<ol>
+<li>Takes the <b>ThreadLifeCycle_III</b> class and expands it so that this program can be run as both an applet and as an application.
+<li>Takes the above step and develops it into an application only program.
+<li>The programs we will develop in this tutorial are:
+<ol>
+<li><b>MultiThreaded</b> - this is a <b>multithreaded</b> program that can run as either an <b>applet</b> or an <b>application</b>.
+<li><b>MultiThreaded_II</b> - this is a <b>multithreaded</b> program that runs as an <b>application</b>. 
+<li><b>MultiThreaded_III</b> - this is a <b>multithreaded</b> program that runs as an <b>application</b> with <b>GUI</b>.
+<ul>
+<li><b>JFrame</b>
+<li><b>JLabel</b>
+<li><b>JPanel</b>
+<li><b>GridLayout</b> - Layout Manager
+<li><b>BorderLayout</b> - Layout Manager
+</ul>
+<li><b>MultiThreaded_IV</b> - this is a <b>multithreaded</b> program that runs as an <b>application</b> with <b>GUI</b>.
+<ul>
+<li><b>JFrame</b>
+<li><b>JLabel</b>
+<li><b>JPanel</b>
+<li><b>JSlider</b>
+<li><b>GridLayout</b> - Layout Manager
+<li><b>BorderLayout</b> - Layout Manager
+<li><b>JOptionPane</b>
+</ul>
+</ol>
+</ol>
+<li><b>Next tutorial</b> - Builds on the previous tutorial by developing a server that can handle both <i>stream sockets</i>, as in the <b>TCP (<i>T</b>ransmission <b>C</b>ontrol <b>P</b>rotocol)</i></b>, and servlets, as in the <b>HTTP <i>(H</b>yper<b>T</b>ext <b>T</b>ransfer <b>P</b>rotocol)</i>.
+This server is called the <b>TAW Server</b>. You can review my other tutorials developed using the <b>TCP</b> protocol by going to:
+<ol>
+<li><a href="http://sumtotalz.com/TotalAppsWorks/Sockets_Tutorial.html">Tutorial: Basic Client/Server Application </a>
+<li><a href="http://sumtotalz.com/TotalAppsWorks/Sockets_Tutorial_II.html"> Tutorial: Basic Client/Server Application II</a>
+<li><a href="http://sumtotalz.com/TotalAppsWorks/Sockets_Tutorial_III.html">  Tutorial: Basic Client/Server Application III</a>
+<li><a href="http://sumtotalz.com/TotalAppsWorks/Sockets_Tutorial_IV.html"> Tutorial: Basic Client/Server Application IV </a>
+</ol>
+<ul>
+</ul>
+</ol>
+We will not repeat the material covered in the previous tutorial. In this tutorial, we will show you how to migrate from a <b>multithreaded</b> applet to a <b>multithreaded</b> application.
+
+The reason for this approach is to set the basis for building more complex applets/applications in later tutorials. </p>
+<p><a name="WAMPOAI"><font color=blue><b><i>Why are multithreaded programs of any interest? </i></b></font></a> In today's world of the Internet, we have the frequently occurring problem of many <i>requesters/clients</i> and one <i>responder/server</i>. Do you remember the <b>Victoria Secrets</b> site crashing a few years ago? The problem, I theorize, was more
+requesters/clients than the responder/server could handle in the required timeframe. <b>What?</b> The site developed a bottleneck. Consider a restaurant with one waiter and many patrons/clients. Now consider the same restaurant with many waiters and many patrons/clients. The many waiters scenario can handle the many patrons/clients more efficiently. For our purposes, how do we handle requests? We could develop a <b>FIFO</b> Queue (<b>F</b>irst <b>I</b>n <b>F</b>irst <b>O</b>ut</b>) and pop the queue in a loop, or we could make our responder/server 
+multithreaded. The latter solution would be analogous to the many waiters scenario. When the operating system loads a program into memory for execution, the running program is considered a <a href="#PROC">process</a>. If we have many simultaneous requests for this running program/process, we have the <i>one waiter, many patrons/clients</i> scenario. If we make our process/program multithreaded, we change the scenario to <i>many waiters, many patrons/clients</i> scenario. 
+A running multithreaded process might be shown as:
+<br> <br>
+<table border>
+<tr>
+<th bgcolor=lightyellow>Multithreaded Program</th>
+</tr>
+<tr>
+<th align=left>
+<pre> <b> <font color=blue>
+Process -------------------------------->
+ Thread1 ----- Task ------->
+      Thread2 ----- Task ------->
+          Thread3 ----- Task ------->
+          ...
+   Threadn ----- Task ------->
+
+</font> </b> </pre>
+</th>
+<tr>
+<th>Figure 2: A Multithreaded program accomplishing its tasks</th>
+</tr>
+</table> <br> <br>
+With the Internet, many programs are now written as applets.
+</p>
+
+<h3><font size="4"><a name="REQ"> Requirements  </a></font></h3>
+<p>The requirements for this project are to:
+<ol>
+<li>Program 1 (<b>Multithreaded</b>)
+<ol>
+<li>Use the <a href="#TEMP">template</a> in <i><a href="#FIG3">Figure 3</a></i> as the start for your applet.
+<li>Modify the ThreadLifeCycle_III class from the previous tutorial so that it complies with the template in Figure 3.
+<li>Build an applet that is a subclass of <b>JApplet</b>.
+<li>This applet should have the following methods:
+<ul>
+<li><b>init()</b>
+<li><b>start()</b>
+<li><b>paint()</b>
+<li><b>stop()</b>
+<li><b>destroy()</b>
+<li><b>main()</b>
+</ul>
+<li>With the <b>main()</b> method added, the program runs as both an applet and as an application.
+</ol>
+<li>Program 2 (<b>Multithreaded_II</b>)
+<ol>
+<li>Convert the <b>Multithreaded</b> program so that it is no longer a program that runs as either an applet or as an application to one that runs only as an application.
+<li>Change the <b>init()</b> method to a <b>Multithreaded()</b> constructor.
+</ol>
+<li>Program 3 (<b>Multithreaded_III</b>)
+<ol>
+<li>Convert the <b>Multithreaded</b> program's <b>JOptionPane</b>s to <b>JLabel</b>s or debugging messages.
+<li>Use the main frame's <b>contentPane</b> to show data on a per Thread basis. See the figure below for an example. <br><br>
+<table border>
+<tr>
+<th>THREAD ID</th>
+<th>START TIME</th>
+<th>START PRIORITY</th>
+<th>ELASPED TIME</th>
+<th>FINAL PRIORITY</th>
+</tr>
+<tr>
+<th>THREAD0</th>
+<th>4:37:4</th>
+<th>5</th>
+<th>0.594</th>
+<th>3</th>
+</tr>
+</table>
+</ol>
+<li>Program 4 (<b>Multithreaded_IV</b>)
+<p>In this example, we want to be a bit more rigorous in our design and implementation. Let's assume we have met with
+our customer several times and this is our representation of what the customer wants. Keep in mind that this is a basic
+thread example and is not intended to be a commercial example.
+<br> <br>
+<table border>
+<tr>
+<th>THREAD ID</th>
+<th>SUSPENDED</th>
+<th>PRIORITY</th>
+<th>SET PRIORITY</th>
+<th>START TIME</th>
+<th>ELASPED TIME</th>
+<th>RUN TIME</th>
+<th>STOPPED</th>
+<th>STOP</th>
+</tr>
+<tr>
+<th>THREAD0</th>
+<th><pre>  /
+  \/   </pre>
+</th>
+<th>5</th>
+<th><pre>  /
+  \/   </pre></th>
+<th>13:15:35</th>
+<th>.876 seconds</th>
+<th>.036 seconds</th>
+<th>STOPPED</th>
+<th><pre>  /
+  \/   </pre>
+</th>
+</tr>
+</table> <br> <br>
+For this example, we will use a design model I call <a href="#HOPDM">Holland's OOP Programming Design Model</a>. In this process, we will use <b>top-down structured program</b> and step-wise refinement on the <b>data</b> and <b>methods</b>. The requirements for this example, based on customer specifications are:
+<ol>
+<li>Define the primary data for this example.
+<li>Define and create the methods to access and manipulate this data.
+<li>Use <b>Holland's OOP Programming Design Model</b> to refine the data and methods. 
+<li>Create the following data points.
+<ul>
+<li>Five threads
+<li>A Thread array to hold the thread references
+<pre> <b> <font color=blue>
+tT1  = new Thread[ 5 ];
+</font> </b> </pre> 
+<li>A JLabel array to hold to each thread's IDs 
+<pre> <b> <font color=blue>
+names         = new JLabel[ 5 ];
+</font> </b> </pre> 
+<li>A JLabel array to hold a reference to each thread's priority
+<pre> <b> <font color=blue>
+threadPriority  = new JLabel[ 5 ];
+</font> </b> </pre> 
+<li>A JCheckBox array to hold a reference to each thread's suspended status 
+<pre> <b> <font color=blue>
+susPend       = new JCheckBox[ 5 ];
+</font> </b> </pre> 
+<li>A JCheckBox array to hold a reference to each thread's intent to suspend 
+<pre> <b> <font color=blue>
+SetPri        = new JCheckBox[ 5 ];
+</font> </b> </pre> 
+<li>A boolean array to hold each thread's suspended status 
+<pre> <b> <font color=blue>
+suspended     = new boolean[ 5 ];
+</font> </b> </pre> 
+<li>A boolean array to hold each thread's intent to change priority
+<pre> <b> <font color=blue>
+SetPriority   = new boolean[ 5 ];
+</font> </b> </pre> 
+<li>A boolean array to hold each thread's current priority
+<pre> <b> <font color=blue>
+priorities    = new int[ 5 ];
+</font> </b> </pre> 
+<li>A double array to hold each thread's run time
+<pre> <b> <font color=blue>
+runTime    = new double[ 5 ];
+</font> </b> </pre> 
+</ul>
+Keep in mind that we will need to modify the data definitions due to:
+<ul>
+<li>Changing requirements
+<li>Changing design
+<li>Clearer understandings resulting from a more detailed implementation/refinement
+</ul>
+<li>Use the application template depicted in <a href="#FIG9"><b>Figure 9</b></a> to start this program's implementation.
+<li>The application should generate random numbers and it should implement class <b>ActionListener</b>
+<li>Create a <b>SetupArrays()</b> method to create/allocate the arrays that will be used in this application
+<li>Create a <b>Setup()</b> method to create/allocate this application's GUI 
+<li>Create a <b>SysPrint()</b> method to log any debuging messages
+<li>Create a <b>actionPerformed( ActionEvent e )</b> method to respond to events caused by GUI objects
+</ol>
+</p>
+</ol>
+We will describe the template we will use to begin converting our applet/application in the next section.
+</p>
+<h3> <a name="Template">What is a Template?</a> </h3>
+<p>If you look in a dictionary, <i>template</i> is defined as
+
+<ul>
+a pattern, usually in the form of a thin plate of metal, wood, plastic, etc., for forming an accurate copy of an object or shape 
+</ul>
+</p>
+<p>In <b>C++</b>, a template is a keyword that allows you to create generic functions and/or classes. Java has a keyword <i>interface</i> that is similar, but for our purposes, we will say they are not the same. Based on what we have seen in the tutorials <i><b>Getting Started</b> and
+<b>First cup of Java</b></i>, how does the term <i>template</i> apply? Remember that a template is a pattern; therefore, the applet/application template for our program looks like the template shown in <b>Figure 3</b> below.
+These templates are not complete. (see <a href="http://sumtotalz.com/TotalAppsWorks/SecondCupOfJava.html"> <b><i>Tutorial: A Second Cup of Java</i></b> </a> for a more complete discussion.)
+For the purposes of this tutorial, we will start our <a name="Template1">template</a> as shown in the following figure.
+<br> <br><a name="FIG3"> </a>
+<table border>
+<tr>
+<th align=left>
+<pre> <b>
+/** 
+ * The MyAppletTemplate class implements an application.
+ */
+class MyAppletTemplate extends JApplet {
+
+   /** MyAppletTemplate init() method */
+   public void init () { {
+       // initialization code
+       // ...       
+   } 
+
+   public void start () {
+
+   }
+
+   public void stop () {
+  
+   }
+
+   public void paint (Graphics g) {
+
+   }
+
+   public void destroy () {
+
+   } 
+
+   public static void main( String args[] ){
+
+   } 
+}
+</pre> </b>
+</th>
+</tr>
+<tr bgcolor=lightyellow>
+<th>Figure 3: Applet/Application Template</th>
+</tr>
+</table>
+<br> <br>
+The above template has no functionality. If we wanted to add some functionality, we could add
+<ul>
+<li><b>SetupMenu()</b> - to create a menu bar and menu items
+<li><b>SetupToolbar()</b> - to create a <b>Toolbar</b>
+<li><b>SetupButtons</b>- to create buttons to add to our <b>GUI</b>
+</ul>
+</p>
+<h3> <a name="MALCTM">Multithreaded ThreadLifeCycle_III program modified</a> </h3>
+<p>This version of the template has been modified to measure the elapsed time to and to display any debugging messages.
+The following two methods have been added:
+<ol>
+<li>Class level variables added are:
+<pre> <b> <font color=blue>
+LINE  
+
+54      private int width = 500, height = 400;
+55      private JFrame appMain ;
+56      private MultiThreaded appMT ;
+</font> </b> </pre> 
+<li>Modification to the <b>init()</b> method
+<pre> <b> <font color=blue>
+LINE  
+
+85      width = 790 ;
+86      height = 550 ;    
+
+88      setSize( width , height ) ;
+</font> </b> </pre> 
+<li>Added <b>sysExit( int ext )</b> method
+<li>Added <b>setWidth( int w )</b> method
+<li>Added <b>setappMT( MultiThreaded app_MT  )</b> method
+<li>Added <b> main( String args[] )</b> method
+</ol>
+The update template is shown in the following <b>Figure 4.</b>
+<br> <br>
+<table border>
+<tr>
+<th bgcolor=lightyellow>Life Cycle of a threaded Applet modified version I</th>
+</tr>
+<tr>
+<th align=left>
+<pre> <b> <font color=blue>
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.JApplet.*;
+import java.util.GregorianCalendar;
+
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.JOptionPane ;
+
+/** *************************************************
+ *  Template for all good multi-threaded applets
+ *  @author Ronald S. Holland
+ *****************************************************/
+public class MultiThreaded extends JApplet {s
+ 
+
+   /**
+    * Provides a way for author to associate information with
+    * an applet. Can be used for copyright, contact information, etc.
+    * @return credits
+    */
+   public String getAppletInfo() {
+ 
+   }
+
+
+   /** ******************************************************
+    *   Called by the browser or applet viewer to inform this
+    *   applet that it has been loaded into the system.
+    *********************************************************/
+   public void init() {
+
+   }
+
+   /** ******************************************************
+    * The SetupMenu() method is called by the init() method
+    * to create the 
+    * 1- Menubar
+    * 2- Menus
+    * 3- Menuitems
+    *********************************************************/
+   public void SetupMenu() {
+
+   }  
+
+   /** ******************************************************
+    * The SetupToolbar() method is called by the init() method
+    * to create the 
+    * 1- Toolbar
+    * 2- Toolbar buttons
+    *********************************************************/
+   public void SetupToolbar() {
+
+   }  
+
+   /** ******************************************************
+    * The SetupButtons() method is called by the init() method
+    * to create the 
+    * 1- Push buttons
+    *********************************************************/
+   public void SetupButtons() {
+
+   }  
+
+   /** ******************************************************
+    *   Called by the browser or applet viewer to inform this
+    *   applet that it should start its execution. The logic is 
+    *   1- Create the three threads
+    *   2- Call the thread's start method
+    *********************************************************/
+   public void start() { 
+ 
+   }
+
+
+   /** ******************************************************
+    *  The sysPrint() method is used to display debugging 
+    *  messages.
+    *********************************************************/
+   public void sysPrint( String str ) {
+ 
+   }
+
+
+   /** ******************************************************
+    *  Called by the browser or applet viewer to inform this
+    *  applet that it should stop its execution.
+    *********************************************************/
+   public void stop( int ii , Thread currentThread ) {
+
+   }
+
+
+   /** ******************************************************
+    *  Called by the browser or applet viewer to inform this
+    *  applet that it is being reclaimed and that it should
+    *  destroy any resources that it has allocated. Set each
+    *  thread to null to cause the garbage collector to reclaim
+    *  its resources.
+    *********************************************************/
+   public void destroy() {
+
+
+   }
+
+
+   /** ******************************************************
+    *  Paints the container. This forwards the paint to any
+    *  lightweight components that are children of this
+    *  container.
+    *********************************************************/
+   public void paint(Graphics g) {
+
+   }
+
+   /** *********************************************************
+    *  The displayElapsedTime() method displays the time elapsed 
+    *  since this program began executing.
+    *  1- message - is the message to be displayed
+    *  2- ii - is the thread ID
+    *  3- aa
+    *     0- means display the start time message 
+    *     1- means display the elasped time message 
+    **************************************************************/
+   public void displayElapsedTime( String message , int ii , int aa ) {
+
+   }
+
+   /** ***********************************************************
+    * The sysExit() method is called in response to a close
+    * application event.
+    ************************************************************* */
+   public void sysExit( int ext ) {
+
+      destroy() ;
+      System.exit( ext ) ;
+   }
+
+   /**  ****************************************************
+    * Set the width of frame to 600 if w less than 0
+    ***************************************************** */
+   public void setWidth( int w )
+      { width = ( w >= 0 ? w : 600 ); }
+
+   /** ****************************************************
+    * Set the MultiThreaded reference
+    ***************************************************** */
+   public void setappMT( MultiThreaded app_MT )
+      { appMT = app_MT ; }
+
+   /** ****************************************************
+    * Set the height to 600 if h less than 0
+    ***************************************************** */
+   public void setHeight( int h )
+      { height = ( h >= 0 ? h : 400 ); }
+
+   /** ********************************************************************
+    *  main(String args[] ) : this is the entry point for this application
+    *                         that Java calls when starting this program
+    *                         execution when it runs as an application.
+    *********************************************************************/
+   public static void main( String args[] )
+   { 
+      
+      app_MT.appMain.addWindowListener(
+         new WindowAdapter() {
+            public void windowClosing( WindowEvent e )
+            {
+              app_MT.sysExit( 0 );
+            }
+         }
+      );
+
+      /** set the window's size */
+
+      /**
+       * showing the window causes all GUI components
+       * attached to the window to be painted
+       */
+
+   }
+
+   /** *********************************************************
+    * A thread is a thread of execution in a program. The Java 
+    * Virtual Machine allows an application to have multiple 
+    * threads of execution running concurrently.
+    **************************************************************/
+   public class MyThread extends Thread {
+
+      }
+
+      /** *********************************************************
+       * The run() method's logic is:
+       * 1- Show a JOptionPane.showMessageDialog
+       * 2- Obtain the current thread reference
+       * 3- Determine which thread initiated a call to the run() method
+       * 4- Repaint the screen
+       * 5- Put the current thread to sleep
+       * 6- Stop the current thread
+       **************************************************************/
+
+      public void run() {
+            
+      }
+   }
+}
+</font> </b> </pre> 
+</th>
+<tr>
+<th>Figure 4: Multithreaded applet's life cycle template modified</th>
+</tr>
+</table> <br> <br>
+The summary of the Thread's Life Cycle methods follows. <br> <br>
+<table border>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<th colspan=2>ThreadLifeCycle Class Method Summary</th>
+</tr>
+<tr BGCOLOR=lightyellow>
+<th> Class</th>
+<th> Description</th>
+</tr>
+<tr>
+<td><b>destroy()</b> </td>
+<td>Called by the browser or applet viewer to inform this applet that it is being reclaimed and that it should destroy any resources that it has allocated.</td>
+</tr>
+<tr>
+<td>displayElapsedTime()</td>
+<td>The displayElapsedTime() method displays the time elapsed since this program began executing.</td>
+</tr>
+<tr>
+<td><b>getAppletInfo()</b></td>
+<td>Provides a way for author to associate information with an applet.</td>
+</tr>
+<tr BGCOLOR=lightblue>
+<td><b>init()</b></td>
+<td>Called by the browser or applet viewer to inform this applet that it has been loaded into the system.</td>
+</tr>
+<tr>
+<td>main()</td>
+<td> main(String args[] ) : this is the entry point for this application that Java calls when starting this program execution when it runs as an application.</td>
+</tr>
+<tr BGCOLOR=lightyellow>
+<td><b>paint()</b></td>
+<td>Paints the container.</td>
+</tr>
+<tr>
+<td><b>setappMT()</b></td>
+<td>Set the height to 600 if h less than 0</td>
+</tr>
+<tr>
+<td><b>setHeight(int h)</b></td>
+<td>Set the height to 600 if h less than 0</td>
+</tr>
+<tr>
+<td><b>SetupButtons()</b></td>
+<td>The SetupButtons() method is called by the init() method to create the 1- Push buttons</td>
+<tr>
+<td><b>SetupButtons()</b></td>
+<td>The SetupButtons() method is called by the init() method to create the Push buttons</td>
+</tr>
+<tr>
+<td><b>SetupMenu()</b></td>
+<td>The SetupMenu() method is called by the init() method to create the:
+<ol>
+<li>Menubar
+<li>Menus
+<li>Menuitems
+</ol></td>
+</tr>
+<tr BGCOLOR=lightblue>
+<td><b>SetupToolbar()</b></td>
+<td>The SetupToolbar() method is called by the init() method to create the:
+<ol>
+<li>Toolbar
+<li>Toolbar buttons
+</ol></td>
+</tr>
+<tr BGCOLOR=lightyellow>
+<td><b>start()</b></td>
+<td>Called by the browser or applet viewer to inform this applet that it should start its execution</td>
+</tr>
+<tr>
+<td><b>stop()</b></td>
+<td>Called by the browser or applet viewer to inform this applet that it should stop its execution.</td>
+</tr>
+<tr>
+<td><b>sysExit(int ext)</b></td>
+<td>The sysExit() method is called in response to a close application event.
+</tr>
+<tr>
+<td><b>sysPrint()</b></td>
+<td>The sysPrint() method is used to display debugging messages.</td>
+</tr>
+</table>
+<h3><a name="MTP">MultiThreaded_II Program - Update 1 </a> </h3>
+<p>The biggest changes made in this modification are:
+<ol>
+<li>In the previous version, the <b>MultiThreaded</b> class inherited from the <b>JApplet</b> class. the <b>MultiThreaded_II</b> class now inherits from <b>JFrame</b> class in this version.
+<pre> <b> <font color=blue>
+public class MultiThreaded_II extends JApplet
+<br><font size=5 color=black> to </font><br>
+public class MultiThreaded_II extends JFrame
+</font> </b> </pre>
+<li>As a result of the change in inheritance, the <b>init()</b> method was changed to the <b>MultiThreaded_II()</b> constructor.
+<pre> <b> <font color=blue>
+public void init() {
+}
+<br><font size=5 color=black> to </font><br>
+public MultiThreaded_II() {
+}
+</font> </b> </pre>
+<li>In the previous version, the <b>MultiThreaded_II</b> program ran as both an applet and as an application.
+<li>In this version, the <b>MultiThreaded_II</b> program only runs as an application.
+<li>Changes made in this version are:
+<ol>
+<li>Class level variables added are:
+<ul>
+<li><b>private Container c ;</b>
+</ul>
+<li>Methods deleted are:
+<ul>
+<li><b>init()</b>
+</ul>
+<li>Methods added are:
+<ul>
+<li>The <b>MultiThreaded_II()</b> method, which has basically the same code that was in the previous version's <b>init()</b> method.
+<ul>
+<li>The following code was added.
+<pre> <b> <font color=blue>
+Line 81   c = getContentPane() ;
+</font> </b> </pre>
+</ul>
+</ul>
+<li>The <b>main()</b> method modified:
+<ul>
+<li>The following code was deleted.
+<pre> <b> <font color=blue>
+// create window in which applet will execute
+app_MT.appMain =  new JFrame( "Multithreaded Applet/Application" );
+
+/** attach applet to center of window */
+app_MT.appMain.getContentPane().add( app_MT );
+
+/** call applet's init(0 and start(0 methods */
+app_MT.init() ;
+app_MT.start() ;
+</font> </b> </pre>
+</ul>
+</ol>
+</ol>
+The following outline depicts the outline for the <b>MultiThreaded_II</b> program.
+<br> <br>
+<table border>
+<tr>
+<th bgcolor=lightyellow>MultiThreaded_II Applet modified to run as an application</th>
+</tr>
+<tr>
+<th align=left>
+<pre> <b> <font color=blue>
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.JApplet.*;
+import java.util.GregorianCalendar;
+
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.JOptionPane ;
+
+/** *************************************************
+ *  Template for all good multi-threaded applications
+ *  @author Ronald S. Holland
+ *****************************************************/
+public class MultiThreaded_II extends JFrame {
+
+   /** *************************************************************
+    * Provides a way for author to associate information with
+    * an application. Can be used for copyright, contact information, etc.
+    * @return credits
+    ****************************************************************/
+   public String getApplicationInfo() {
+      
+   }
+
+
+   /** ******************************************************
+    *   Called when the main() method creates a 
+    *   MultiThreaded_II object.
+    *********************************************************/
+   public MultiThreaded_II() {
+ 
+
+   }
+
+   /** ******************************************************
+    * The SetupMenu() method is called by the MultiThreaded_II()  
+    * constructor to create the 
+    * 1- Menubar
+    * 2- Menus
+    * 3- Menuitems
+    *********************************************************/
+   public void SetupMenu() {
+
+   }  
+
+   /** *************************************************************
+    * The SetupToolbar() method is called by the MultiThreaded_II()
+    * constructor to create the 
+    * 1- Toolbar
+    * 2- Toolbar buttons
+    ***************************************************************/
+   public void SetupToolbar() {
+
+   }  
+
+   /** *************************************************************
+    * The SetupButtons() method is called by the MultiThreaded_II()
+    * constructor to create the 
+    * 1- Push buttons
+    ****************************************************************/
+   public void SetupButtons() {
+
+   }  
+
+   /** ******************************************************
+    *   Called by the MultiThreaded_II() constructor to inform 
+    *   this method to start creating its threads. The logic is 
+    *   1- Create the three threads
+    *   2- Call the thread's start method
+    *********************************************************/
+   public void startThreads() {
+
+   }
+
+
+   /** ******************************************************
+    *  The sysPrint() method is used to display debugging 
+    *  messages.
+    *********************************************************/
+   public void sysPrint( String str ) {
+
+   }
+
+
+   /** ******************************************************
+    *  Called by this program's MyThread's run() method to
+    *  inform it to stop its execution.
+    *********************************************************/
+   public void stop( int ii , Thread currentThread ) {
+
+   }
+
+
+   /** ******************************************************
+    *  Called by the sysExit() method to inform this
+    *  application that it is being reclaimed and that it should
+    *  destroy any resources that it has allocated. Set each
+    *  thread to null to cause the garbage collector to reclaim
+    *  its resources.
+    *********************************************************/
+   public void destroy() {
+
+   }
+
+
+   /** ******************************************************
+    *  Paints the container. This forwards the paint to any
+    *  lightweight components that are children of this
+    *  container.
+    *********************************************************/
+   public void paint(Graphics g) {
+
+   }
+
+   /** *********************************************************
+    *  The displayElapsedTime() method displays the time elapsed 
+    *  since this program began executing.
+    *  1- message - is the message to be displayed
+    *  2- ii - is the thread ID
+    *  3- aa
+    *     0- means display the start time message 
+    *     1- means display the elasped time message 
+    **************************************************************/
+   public void displayElapsedTime( String message , int ii , int aa ) {
+
+   }
+
+   /** ***********************************************************
+    * The sysExit() method is called in response to a close
+    * application event.
+    ************************************************************* */
+   public void sysExit( int ext ) {
+
+   }
+
+   /**  ****************************************************
+    * Set the width of frame to 600 if w less than 0
+    ***************************************************** */
+   public void setWidth( int w )
+      { width = ( w >= 0 ? w : 600 ); }
+
+   /** ****************************************************
+    * Set the height to 600 if h less than 0
+    ***************************************************** */
+   public void setappMT( MultiThreaded_II app_MT )
+      { appMT = app_MT ; }
+
+   /** ****************************************************
+    * Set the height to 600 if h less than 0
+    ***************************************************** */
+   public void setHeight( int h )
+      { height = ( h >= 0 ? h : 400 ); }
+
+   /** ********************************************************************
+    *  main(String args[] ) : this is the entry point for this application
+    *                         that Java calls when starting this program
+    *                         execution when it runs as an application.
+    *********************************************************************/
+   public static void main( String args[] )
+   { 
+      
+   }
+
+   /** *********************************************************
+    * A thread is a thread of execution in a program. The Java 
+    * Virtual Machine allows an application to have multiple 
+    * threads of execution running concurrently.
+    **************************************************************/
+   public class MyThread extends Thread {
+
+      public MyThread( MultiThreaded_II MTL_C , int in_dex ) {
+
+      }
+
+      /** *********************************************************
+       * The run() method's logic is:
+       * 1- Show a JOptionPane.showMessageDialog
+       * 2- Obtain the current thread reference
+       * 3- Determine which thread initiated a call to the run() method
+       * 4- Repaint the screen
+       * 5- Put the current thread to sleep
+       * 6- Stop the current thread
+       **************************************************************/
+
+      public void run() {
+
+      }
+   }
+}
+</font> </b> </pre> 
+</th>
+<tr>
+<th>Figure 5: Multithreaded_II template modification No. 1</th>
+</tr>
+</table> <br> <br>
+</p>
+<h3><a name="TLCPIII">MultiThreaded_III Program - Update 2</a> </h3>
+<p>What has been added in this update?
+<ol>
+<li>The following class level Variables have been added.
+<ul>
+<li><b>Line 49
+<pre>
+private JLabel title[] ,  names[] , startTimes[] , threadPriority[] ,
+                elaspedTimes[] , finalPriority[];</pre> </b>
+<li><b>Line 59
+<pre>
+   private JPanel mainPanel , helloPanel ;
+   private JLabel hello1 ,  hello2 ;</pre> </b>
+</ul>
+<li>The MultiThreaded_II() constructor has changed from
+<pre> <b>
+   public MultiThreaded_II() {
+
+      c = getContentPane() ;
+      
+      cal = new GregorianCalendar()  ; 
+      hrs  = cal.get( cal.HOUR )   ;
+      mins = cal.get( cal.MINUTE ) ;
+      secs = cal.get( cal.SECOND ) ;
+      width = 790 ;
+      height = 550 ;   
+ 
+
+      setSize( width , height ) ;
+
+      JOptionPane.showMessageDialog(null,
+                          "We are in the init() method for Initialization.",
+                          "Initialization",
+                          JOptionPane.INFORMATION_MESSAGE );
+
+      SetupMenu() ;
+
+      SetupToolbar() ;
+
+      SetupButtons() ; 
+
+      startThreads() ;
+
+      show() ;
+
+   }
+</b> </pre>
+<font size=5><b>to</b>  </font>
+<pre> <b>
+   public MultiThreaded_III() {
+
+      c = getContentPane() ;
+
+      sysPrint( "We are in the init() method for Initialization." );
+
+      SetupMenu() ;
+
+      SetupToolbar() ;
+
+      SetupButtons() ; 
+
+      Setup() ;    
+
+      startThreads() ;
+
+      show() ;
+
+   }
+</b> </pre>
+<li>A <b>Setup()</b> method was created to:
+<ol>
+<li>Create the GregorianCalendar() variable <b>cal</b> 
+<li>Get the current hour, minute, second
+<li>Set the width and height
+<li>Create String arrays
+<li>Create the JPanels
+<li>Create the JLabels
+<li>Initialize the JLabels
+<li>Set the layout managers for the JPanels  
+<li>Create the hello greeting and add it to the main Frame  
+<li>Add the JPanels to the main frame
+</ol>
+<li>In the <b>paint()</b> method, the following has been deleted.
+<pre> <b> <font color=blue>
+      g.drawString( "Hello, from Ronald S. Holland" , 10, 50 ) ;
+      g.drawString( "at Total Application Works (TAW)" , 10, 70 ) ;
+</font> </b>  </pre> 
+<li>In the <b>displayElapsedTime()</b> method, the following has been modified.
+<ol>
+<li>The names array is set for each of the thread IDs.
+<li>The startTimes array is set for each of the thread's start times.
+<li>The threadPriority array is set for each of the thread's begining priority.
+<li>The elaspedTimes array is set for each of the thread's final priority.
+</ol>
+</ol>
+<br> <br>
+<table border>
+<tr>
+<th bgcolor=lightyellow>MultiThreaded_III Application - Update 2</th>
+</tr>
+<tr>
+<th align=left>
+<pre> <b> <font color=blue>
+
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.JPanel.*;
+import java.util.GregorianCalendar;
+
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.JOptionPane ;
+
+/** *************************************************
+ *  Template for all good multi-threaded applications
+ *  @author Ronald S. Holland
+ *****************************************************/
+public class MultiThreaded_III extends JFrame {
+
+   /** **************************************************************
+    * Provides a way for author to associate information with
+    * an applet. Can be used for copyright, contact information, etc.
+    * @return credits
+    ******************************************************************/
+   public String getAppletInfo() {
+
+   }
+
+
+   /** ******************************************************
+    *   Called by the main() method to begin the initialization
+    *   process for this program.
+    *********************************************************/
+   public MultiThreaded_III() {
+
+   }
+
+   /** ***********************************************************
+    * The SetupMenu() method is called by the MultiThreaded_III()
+    * constructor to create the 
+    * 1- Menubar
+    * 2- Menus
+    * 3- Menuitems
+    ***************************************************************/
+   public void SetupMenu() {
+
+   }  
+
+   /** **************************************************************
+    * The SetupToolbar() method is called by the MultiThreaded_III()
+    * constructor to create the 
+    * 1- Toolbar
+    * 2- Toolbar buttons
+    *****************************************************************/
+   public void SetupToolbar() {
+
+   }  
+
+   /** ***************************************************************
+    * The SetupButtons() method is called by the MultiThreaded_III()
+    * constructor to create the 
+    * 1- Push buttons
+    ******************************************************************/
+   public void SetupButtons() {
+
+   }  
+
+   /** ******************************************************
+    * The Setup() method is called by the MultiThreaded_III() 
+    * constructor to  
+    *  1- Create the GregorianCalendar() variable cal 
+    *  2- Get the current hour, minute, second
+    *  3- Set the width and height
+    *  4- Create String arrays
+    *  5- Create the JPanels
+    *  6- Create the JLabels
+    *  7- Create the JLabels
+    *  8- Set the layout managers for the JPanels  
+    *  9- Create the hello greeting and add it to the main Frame  
+    * 10- Add the JPanels to the main frame
+    *********************************************************/
+   public void Setup() {
+
+   }  
+
+   /** ******************************************************
+    *   Called by the MultiThreaded_III() constructor to inform 
+    *   this program that it should start creating the threads.  
+    *   The logic is 
+    *   1- Create the three threads
+    *   2- Call the thread's start method
+    *********************************************************/
+   public void startThreads() {
+
+   }
+
+
+   /** ******************************************************
+    *  The sysPrint() method is used to display debugging 
+    *  messages.
+    *********************************************************/
+   public void sysPrint( String str ) {
+      if ( debug ) {
+         System.out.println( str ) ;
+      }
+   }
+
+
+   /** ******************************************************
+    *  Called by the displayElapsedTime() method to inform this
+    *  thread that it should stop its execution.
+    *  1- ii = Thread ID
+    *  2- currentThread = thread reference
+    *********************************************************/
+   public void stop( int ii , Thread currentThread ) {
+
+   }
+
+
+   /** ******************************************************
+    *  Called by the sysExit() method to inform this
+    *  program that it is being reclaimed and that it should
+    *  destroy any resources that it has allocated. Set each
+    *  thread to null to cause the garbage collector to reclaim
+    *  its resources.
+    *********************************************************/
+   public void destroy() {
+
+   }
+
+
+   /** ******************************************************
+    *  Paints the container. This forwards the paint to any
+    *  lightweight components that are children of this
+    *  container.
+    *********************************************************/
+   public void paint(Graphics g) {
+
+   }
+
+   /** *********************************************************
+    *  The displayElapsedTime() method displays the time elapsed 
+    *  since this program began executing.
+    *  1- message - is the message to be displayed
+    *  2- ii - is the thread ID
+    *  3- aa
+    *     0- means display the start time message 
+    *     1- means display the elasped time message 
+    **************************************************************/
+   public void displayElapsedTime( String message , int ii , int aa ) {
+
+   }
+
+   /** ***********************************************************
+    * The sysExit() method is called in response to a close
+    * application event.
+    ************************************************************* */
+   public void sysExit( int ext ) {
+
+      destroy() ;
+      System.exit( ext ) ;
+   }
+
+   /**  ****************************************************
+    * Set the width of frame to 600 if w less than 0
+    ***************************************************** */
+   public void setWidth( int w )
+      { width = ( w >= 0 ? w : 600 ); }
+
+   /** ****************************************************
+    * Set the height to 600 if h less than 0
+    ***************************************************** */
+   public void setappMT( MultiThreaded_III app_MT )
+      { appMT = app_MT ; }
+
+   /** ****************************************************
+    * Set the height to 600 if h less than 0
+    ***************************************************** */
+   public void setHeight( int h )
+      { height = ( h >= 0 ? h : 400 ); }
+
+   /** ********************************************************************
+    *  main(String args[] ) : this is the entry point for this application
+    *                         that Java calls when starting this program
+    *                         execution when it runs as an application.
+    *********************************************************************/
+   public static void main( String args[] )
+   { 
+      
+   }
+
+   /** *********************************************************
+    * A thread is a thread of execution in a program. The Java 
+    * Virtual Machine allows an application to have multiple 
+    * threads of execution running concurrently.
+    **************************************************************/
+   public class MyThread extends Thread {
+
+      public MyThread( MultiThreaded_III MTL_C , int in_dex ) {
+   
+      }
+
+      /** *********************************************************
+       * The run() method's logic is:
+       * 1- Show a JOptionPane.showMessageDialog
+       * 2- Obtain the current thread reference
+       * 3- Determine which thread initiated a call to the run() method
+       * 4- Repaint the screen
+       * 5- Put the current thread to sleep
+       * 6- Stop the current thread
+       **************************************************************/
+
+      public void run() {
+
+      }
+   }
+}
+
+</font> </b> </pre> 
+</th>
+<tr>
+<th>Figure 6: MultiThreaded_III Application template Update 2</th>
+</tr>
+</table> <br> <br>
+Why do we use the setup() method? We will discuss this in the next section.
+</p>
+<h3><a name="SETUP">What is the purpose of the setup() method?  </a></h3>
+<p>The purpose of the <b>setup()</b> method is to create any <b>GUI</b> that is displayed
+on the main frame. To appreciate this discussion, we must remember our starting point. We started this tutorial using the template in <a href="#FIG9"><b>Figure 9</b></a>, which looks like the following:
+<pre> <b> <font color=blue> 
+/** 
+ * The Multithreaded_IV class implements an application.
+ */
+class Multithreaded_IV extends JFrame {
+    private data-type dt;
+      ...
+
+    // MyApp constructor
+    public  Multithreaded_IV() {
+       //initialization code
+       //...
+    } 
+
+    public static void main(String[] args) {
+        Multithreaded_IV app = new Multithreaded_IV()  ; 
+        //minimal code
+        //...
+    }
+} 
+</font> </b> </pre>
+In the above outline, it appears that all of the initialization code is done in the constructor. For ease of readibility and maintainability, I prefer to spread the initialization out over finer logical units. With this thought in mind,
+the MultiThreaded() constructor's logic look like:
+<ol>
+<li><b>SetupMenu()</b>
+<li><b>SetupToolbar()</b>
+<li><b>SetupPanels()</b>
+<li><b>SetupArrays()</b>
+<li><b>SetupButtons()</b>
+<li><b>Setup()</b>
+<li><b>startThreads()</b>
+<li><b>show()</b> - Makes the JFrame visible
+</ol>
+The above logic takes place in the <b>MultiThreaded()_IV</b> constructor's. Instead of placing all of the initialization in the constructor, we have already performed several passes of step-wise refinement. So that the outline/template now looks like:
+<br> <br>  
+<table border>
+<tr bgcolor=lightyellow>
+<th>setup() method </th>
+</tr>
+<tr>
+<td> <pre> <b> <font color=blue size=4>
+public MultiThreaded_IV() {
+
+   c = getContentPane() ;
+
+
+   SetupMenu() ;
+
+   SetupToolbar() ;
+
+   SetupPanels() ;
+
+   SetupArrays() ;
+
+   SetupButtons() ;
+
+   Setup() ;
+
+   startThreads() ;
+
+   show() ;
+
+}
+private void SetupMenu() {
+   ...
+}
+private void SetupToolbar()  {
+   ...
+}
+private void SetupPanels()  {
+   ...
+}
+private SetupArrays()  {
+   ...
+}
+private void SetupButtons()  {
+   ...
+}
+private void Setup()  {
+   ...
+}
+private void startThreads() {
+   ...
+}
+</font> </b> </pre> </td>
+</tr>
+<tr>
+<th>Figure 7:  </th>
+</tr>
+</table> <br> <br>
+What just happened was the initialization that normally might have been performed in the constructor and the setup() method has broken down into the above methods found in <b>Figure 7</b>. This process was/is known as <a href="#TOPD">top-down</a> structured programming. What I have done is take a unit (MultiThreaded_IV() constructor), and I have broken it down into finer units.
+It is like taking a dime and turning it into ten pennies. The pennies are still worth ten cents; the same value that the dime has. 
+Even though I do this replacement in the context of the original <b>constructor/Setup()</b> method, this finer
+granularity makes it easier to see what I have done and what needs to be done. As you do this top-down-structured programming, don't be afraid to prototype what you are doing. The prototype allows you to evaluate your design, as you progress. Leonardo da Vinci probably evaluated the Mona Lisa as the painting progressed
+instead of waiting to the end. You don't want to wait to the end to find out what you are building doesn't work or is not what the customer wants. </p>
+<p>In <i>object-oriented</i> programming, programming revolves around the data. So in this style, the top is the data. It might be depicted as follows:
+<br> <br>
+<table border>
+<tr bgcolor=lightyellow>
+<th><a name="HOPDM">Holland's OOP Programming Design Model  </a></th>
+</tr>
+<tr>
+<td>
+<pre> <b> <font color=blue>
+          +--------------+
+          |      Data    |<----+  
+          +-------+------+     | 
+                  ^            |
+                  |----------->+
+                  V            ^
+          +-------+------+     |
+          |   Top-down   |     | 
+          |  Structured  |<----+
+          |  programming |     |
+          |  on Classes  |     | (step-wise)
+          |  and methods |     | (refinement)
+          +--------------+     | (as needed) 
+                  |            |
+                  +------------+ 
+ 
+</font> </b> </pre>
+</td>
+</tr>
+<tr>
+<th>Figure 8: </th>
+</tr>
+</table>
+</p>
+<p>When you consider my tutorial on <a href="http://sumtotalz.com/TotalAppsWorks/SecondCupOfJava.html">How to get user input and do some simple mathematical processing on the data (my site)</a>, I introduce the concept of a template for a Java application and one for an applet.
+The concept of a template/pattern can be used as a starting point as an outline for commonly occurring problems. A design template/pattern is an outline. It is not a finished design, but it can be fleshed-out into code; it is a description or template for how to solve a problem that can be used in many different situations. 
+Hence, the concept of top-down-structured programming.
+For example, I can use the following generic application template/pattern as a starting for a more complex application.
+<a name="FIG9"><br> <br></a>
+<table border>
+<tr bgcolor=lightyellow>
+<th>Generic application template/pattern</th>
+</tr>
+<tr>
+<td> 
+<pre> <b> <font color=blue>
+/** 
+ * The Multithreaded_IV class implements an application.
+ */
+class Multithreaded_IV extends JFrame {
+    private data-type dt;
+      ...
+
+    // MyApp constructor
+    public  Multithreaded_IV() {
+       //initialization code
+       //...
+    } 
+
+    public static void main(String[] args) {
+        Multithreaded_IV app = new Multithreaded_IV()  ; 
+        //minimal code
+        //...
+    }
+} 
+</font> </b> </pre> </td> 
+</tr> 
+<tr>
+<th>Figure 10: </th>
+</tr>
+</table>  <br>  <br> 
+Once the data has been defined, in the above template, I can begin my top-down structured design. Similarly, I can use the same approach to start my design effort for an applet. The template/pattern for an applet looks like:
+<br> <br>
+<table border>
+<tr bgcolor=lightyellow>
+<th>Generic application template/pattern <br>
+Start top-down structured design </th>
+</tr>
+<tr>
+<td> <pre> <b> <font color=blue>
+  
+import java.applet.*;
+import java.awt.*;
+ 
+/**
+ * The MyApplet class implements an applet.
+ */
+public class MyApplet extends Applet {
+    
+    private data-type dt;
+      ...
+
+    public void init() {
+        // initialization code
+        initialization code...
+        ...
+    }
+
+    public void paint(Graphics g) {
+        // Display "something!"
+        g.drawString("something!", 50, 25);
+    }
+}
+</font> </b> </pre> </td> 
+</tr> 
+<tr> 
+<th> Figure 11: </th> 
+</tr> 
+</table>  <br>  <br> 
+From <b>Webopedia</b>, "Object-oriented design patterns typically show relationships and interactions between classes or objects, without specifying the final application classes or objects that are involved." 
+</p>
+<h3><a name="TLCPIV">MultiThreaded_IV Program - Update 3</a> </h3>
+<p>I am going to use the template depicted in <a href="#FIG9"><b>Figure 9</b></a> to begin this program. The process that I will apply is outlined in <a href="#HOPDM">Holland's OOP Programming Design Model</a>. This program will display data 
+relative each of five threads. The major design point is a thread's data. Based on the requirements, we will show:
+<ol>
+<li><b>Thread ID</b>
+<li><b>Suspended </b>
+<li><b>Priority</b>
+<li><b>Set Priority</b>
+<li><b>Start Time</b>
+<li><b>Elasped Time</b>
+<li><b>Run Time</b>
+<li><b>Stopped</b>
+<li><b>Stop</b>
+</ol>
+Arrays hold data of the same data type in contiguous locations. Since we are working with five threads, I have chosen to store similar data types in arrays.
+We will iterate on our data definitions as we refine our implementation. Let's start with the following.
+<ol>
+<li>Data definition - first pass
+<pre> <b> <font color=blue>
+Thread tT1[]  ;
+JLabel title[] ,  names[] , startTimes[] , threadPriority[] ,
+                elaspedTimes[] , runTimes[] , finalPriority[];
+JCheckBox susPend[] , SetPri[];
+boolean suspended[] , SetPriority[] , debug = true;
+</font> </b> </pre>
+<li>The Setup() method is called by the init() method to
+<ol>
+<li>Create the GregorianCalendar() variable cal
+<li>Get the current hour, minute, second
+<li>Set the width and height
+<li>Create the JLabels for the hello greeting
+<li>Add the hello panel to the content panel
+<li>Create the title array
+<li>Set the text for the title
+<li>Set up the GUI
+<li>Add the ActionListeners
+<li>Add the rest of the GUI to the content pane
+<li>Create the priority JLabel and JSlider
+<li>Add the JLabel and JSlider to the priority Panel
+</ol>
+<li>Called by the MultiThreaded_IV() constructor to start
+<ol>
+<li>creating the five Threads. The logic is
+<li>Create the five threads
+<li>Call each thread's start method
+</ol>
+<li>The actionPerformed() is called to handle button events. It is called to respond to pressing the
+<ol>
+<li>Suspend checkbox
+<li>Set priority checkbox
+<li>Stopped checkbox
+</ol>
+</ol>
+
+The summary of the MultiThreaded_IV class methods follows. <br> <br>
+<table border>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<th colspan=2>MultiThreaded_IV Class Method Summary</th>
+</tr>
+<tr BGCOLOR=lightyellow>
+<th> Class</th>
+<th> Description</th>
+</tr>
+<tr>
+<td><b>MultiThreaded_IV()</b> </td>
+<td>This is the constructor for the MultiThreaded_IV() class that is used for initialization.</td>
+</tr>
+<tr>
+<td><b>actionPerformed()</b> </td>
+<td>The actionPerformed() is called to handle button events.
+<ol>
+<li>Suspend checkbox
+<li>Set priority checkbox
+<li>Stop checkbox
+</ol>
+</td>
+</tr>
+<tr>
+<td><b>destroy()</b> </td>
+<td>Called by the stop() method to inform Java runtime that thread is no longer being used and it is ready to be reclaimed and that it should destroy any resources that it has allocated.</td>
+</tr>
+<tr>
+<td><b>displayElapsedTime()</b> </td>
+<td>The displayElapsedTime() method displays the time elapsed since this program began executing.</td>
+</tr>
+<tr>
+<td><b>getApplicationInfo()</b> </td>
+<td>Provides a way for author to associate information with an application.</td>
+</tr>
+<tr>
+<td><b>main()</b> </td>
+<td>this is the entry point for this application that Java calls when starting this program
+execution when it runs as an application.</td>
+</tr>
+<tr>
+<td>paint()<b></b> </td>
+<td>Paints the container.</td>
+</tr>
+<tr>
+<td><b>setappMT()</b> </td>
+<td> Sets the MultiThreaded_IV reference</td>
+</tr>
+<tr>
+<td><b>setHeight()</b> </td>
+<td>Set the height to 600 if h less than 0</td>
+</tr>
+<tr>
+<td><b>Setup()</b> </td>
+<td>
+<ul>
+<li>The Setup() method is called by the init() method to
+<ol>
+<li>Create the GregorianCalendar() variable cal
+<li>Get the current hour, minute, second
+<li>Set the width and height
+<li>Create the JLabels for the hello greeting
+<li>Add the hello panel to the content panel
+<li>Create the title array
+<li>Set the text for the title
+<li>Set up the GUI
+<li>Add the ActionListeners
+<li>Add the rest of the GUI to the content pane
+<li>Create the priority JLabel and JSlider
+<li>Add the JLabel and JSlider to the priority Panel
+</ol>
+</ul>
+</td>
+</tr>
+<tr>
+<td><b>SetupArrays()</b> </td>
+<td>
+<ul>
+<li>The SetupArrays() method is called by the init() method to create the
+<ol>
+<li>elaspedTimes[] contains the start times minus the stop times
+<li>finalPriority was used to show the final priority. It is no longer used.
+<li>isStopped[] shows whether a thread has been stopped
+<li>names[] contains the thread names
+<li>priorities[] contains the thread's current priority
+<li>Priority[] is used to display the thread's current priority
+<li>runTimes[] is the time the tread is not waiting/sleeping
+<li>SetPri[] indicates that the user wants to change the thread's priority
+<li>SETPriority[] contains the flags indicating the priority is undergoing a change
+<li>startTimes[] contains each thread's start time
+<li>stopped[] indicates the thread has been stopped
+<li>stopThread[] shows that a thread has been stopped
+<li>susPend[] contains indicators that the user wants to suspend a thread
+<li>suspended[] contains flags indicating a thread is suspended
+<li>tT1[] contains the IDs for the threads
+</ol>
+</ul>
+</td>
+</tr>
+<tr>
+<td><b>SetupButtons()</b> </td>
+<td> The SetupButtons() method is called by the init() method to create the Push buttons</td>
+</tr>
+<tr>
+<td><b>SetupMenu()</b> </td>
+<td>The SetupMenu() method is called by the init() method to create the 
+<ol>
+<li>Menubar 
+<li>Menus 
+<li>Menuitems
+</ol>
+</td>
+</tr>
+<tr>
+<td><b>SetupPanels()</b> </td>
+<td>The SetupPanels() method is called by the init() method to: 
+<ol>
+<li>Create the JPanels 
+<li>Set up the Layout Managers to be used with JPanel 
+<li>Add the JPanels to the content pane
+</ol>
+</td>
+</tr>
+<tr>
+<td><b>SetupToolbar()</b> </td>
+<td>The SetupToolbar() method is called by the init() method to create the 
+<ol>
+<li>Toolbar 
+<li>Toolbar buttons
+</ol>
+</td>
+</tr>
+<tr>
+<td><b>setWidth()
+<td>Set the width of frame to 600 if w less than 0</td>
+</tr>
+<tr>
+<td><b>startThreads()</b</td>
+<td>Called by the MultiThreaded_IV() constructor to start creating the five Threads.</td>
+</tr>
+<tr>
+<td><b>stop()</b</td>
+<td>alled by the displayElapsedTime() method to inform this application that it should stop the thread indicated by
+the thread id specified by ii.
+<ol>
+<li>ii = Thread ID
+<li>currentThread = thread reference
+</ol>
+</td>
+</tr>
+<tr>
+<td><b>sysExit()</b</td>
+<td>The sysExit() method is called in response to a close application event.</td>
+</tr>
+<tr>
+<td><b>sysPrint()</b</td>
+<td>The sysPrint() method is used to display debugging messages.</td>
+</tr>
+</table>
+</p>
+<h2><a name="DEF">Definitions</a> </h2>
+<p><a name="APP"><b>applet</b></a> <ul>  is a program designed to be executed from within another application, such as a browser like Netscape. An applet is different from an application. Applets cannot be executed directly from the operating system like an application. </ul> </p>
+<p><a name="APP"> <b>application server</b></a> <ul>  Also called an appserver. A program that handles all application operations between users and an organization's backend business applications or databases. Application servers are typically used for complex transaction-based applications. To support high-end needs, an application server has to have built-in redundancy, monitors for high-availability, high-performance distributed application services and support for complex database access.<br><br>
+Sometimes referred to as a type of middleware, application servers occupy a large chunk of computing territory between database servers and the end user, and they often connect the two.  </ul> </p>
+<p><a name="ASYN"><b>asynchronous</b></a> <ul> Most communication between computers and devices is asynchronous -- it can occur at any time and at irregular intervals. Communication within a computer, however, is usually synchronous and is governed by the microprocessor clock. Signals along the bus, for example, can occur only at specific points in the clock cycle.</ul> </p>
+<p><a name="CONC"><b>concurrently</b></a> <ul> In programming, this refers to the ability of multiple programs running at the same time. This can only happen if there are multiple processors. If there is one processor, then the programs are timeslicing.</ul> </p>
+<p><a name="DISTPROC"> <b>distributed processing</b></a> <ul> Refers to any of a variety of computer system configurations that comprise more than one computer/processor to run an application. This includes 
+parallel processing or multiprocessing, in which a single computer uses more than one CPU to execute programs. More often, however, distributed processing refers to local-area networks (LANs) designed so that a single program can run simultaneously on various computers at one site or at various sites. Most distributed processing systems contain sophisticated software that detects 
+
+idle CPUs on the network and parcels out programs to utilize them. </p>
+<p>Another form of distributed processing involves distributed databases, databases in which the data is stored across two or more computer systems. The database system keeps track of where the data is so that the distributed nature of the database is not apparent to users.  </ul> </p>
+<p><a name="MODW"><b> HTTP</b></a> <ul> Short for HyperText Transfer Protocol, the underlying protocol used by the World Wide Web. HTTP defines how messages are formatted and transmitted, and what actions Web servers and browsers should take in response to various commands. For example, when you enter a URL in your browser, this actually sends an HTTP command to the Web server directing it to fetch and transmit the requested Web page. </ul> </p>
+<p><a name="MODW"><b>modal window</b></a> <ul>  A modal window is any type of window that is a child (secondary window, dialog) to a parent window and must run to completion or exit before returning control to the parent. This means that no other window can be accessed while this secondary window is active. An example of this is the <b>Save</b> dialog in a text editor.</ul> </p>
+<p><a name="MODLW"><b>modeless window</b></a> <ul>  Similar to a modal window as it is a secondary window (i.e., child, dialog) that stays active on the user's screen until exited. Modeless windows can be minimized or hidden behind other windows. Unlike a modal window, a modeless window allows the user to continue accessing other windows (parent window) while the modeless window is open. </ul> </p>
+<p><a name="MULTIP"><b> multiprocessing</b></a> <ul> Refers to a computer system's ability to support more than one process (program) at the same time. Multiprocessing operating systems enable several programs to run concurrently. 
+<p>Multiprocessing or multiple processors involves more than one processor. Multiprocessing is not the same as multitasking/multithreading. Java supports multitasking/multithreading. The <b>Windows</b> operating system supports multitasking/multithreading. <b>Windows</b> does not support multiprocessing. </ul> </p>
+<p><a name="MULTIT"> <b>multithreading</b></a>
+<ul>This is the capability of an operating system to execute different parts of a program, called threads, simultaneously. In reality, these threads run on a single processor, and these threads do not run at the same time or simultaneously. In effect, these threads are timeslicing. On a single processor, only one program can be <b>running</b> at a time. The programmer must carefully design the program in such a way that all the threads can timeslice without interfering with each other.</ul>
+<p><a name="PROC"><b>process</b></a>  <ul> A process is an executing program. An example could be a running text editor, word processor, or a browser.  </ul>   </p>
+<p><a name="REALT"><b>realtime</b></a> <ul> Real-time processing is the application of hardware and software systems which are subject to a "real-time constraint"—i.e., operational deadlines from stimuli/data input to output or the system response to that stimuli. </ul> </p>
+<p><a name="SYN"><b>synchronous</b></a> - Means that an event occurs at regular intervals. The opposite of synchronous is asynchronous.</p>
+<p><a name="TCP"><b>TCP</b></a> - Abbreviation of Transmission Control Protocol, and pronounced as separate letters. TCP is one of the main protocols in TCP/IP networks. Whereas the IP protocol deals only with packets, TCP enables two hosts to establish a connection and exchange streams of data. TCP guarantees delivery of data and also guarantees that packets will be delivered in the same order in which they were sent.
+<p><a name="TEMP"><b>template</b></a> -  establishes or serves as a pattern. </p>
+<p><a name="THREAD"><b>thread</b></a>
+<ul>In programming, this refers to a part of a program that can execute concurrently with and independently of other parts of the program.</ul>
+<p><a name="TIMESL"><b>timeslicing</b></a>
+<ul>
+In programming, this refers to how the operating system parcels out time for the various programs to run/execute. This is usually done on a priority basis, with the operating system having the highest priority. Requests for system services usually result in a program/thread yielding its execution time and going into a wait state. When this happens, the operating system grants another program/thread execution time.
+In some systems, a program/thread is allocated a certain amount of time. When this time period is reached, the program/thread must yield to another program/thread.</p> 
+</ul>
+<br> <br>
+          <br> </a><center><a name="INH"> 
+          <img src="indexHWS_files/bludiv4684.html" width="600" height="5">
+           <p><a name="INH"><font face="Verdana, Arial, Helvetica, sans-serif" size="1">[<a href="http://sumtotalz.com/TotalAppsWorks/index.html">HOME</a>] 
+                 [<a href="http://sumtotalz.com/TotalAppsWorks/consulting.html">Consulting</a>] [<a href="http://sumtotalz.com/TotalAppsWorks/design.html">Design</a>]
+                 [<a href="http://sumtotalz.com/TotalAppsWorks/Maintenance.html">Maintenance</a>] [<a href="http://sumtotalz.com/TotalAppsWorks/project.html">Project</a>] 
+                 [<a href="http://sumtotalz.com/TotalAppsWorks/testing.html">Testing</a>] [<a href="http://sumtotalz.com/TotalAppsWorks/training.html">Training</a>] [<a href="http://sumtotalz.com/TotalAppsWorks/turnkey.html">Turnkey</a>] 
+                  [<a href="http://sumtotalz.com/TotalAppsWorks/java.html">Java</a>]</font></font></font></p>
+
+          <p><font color="black" size="2" face="Arial, Helvetica, sans-serif">© 2002 - 2007 All 
+                Rights Reserved<b><i> Total Application Works </i></b></font></font></font></p> </center>
+<p></p>
+</font>
+</body>
+</html>
